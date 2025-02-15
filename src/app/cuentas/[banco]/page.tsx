@@ -62,15 +62,20 @@ export default function CuentasBanco() {
 
         ) : (
           <ul className="space-y-4">
-            {accounts.map((account) => (
-              <a key={account.id} href={`/${account.id}/${account.link}/transacciones`}>
-                <li className="border p-4 rounded-lg shadow text-black hover:bg-gray-100">
-                  <p><strong>Nombre:</strong> {account.name}</p>
-                  <p><strong>Tipo:</strong> {account.type}</p>
-                  <p>{account.public_identification_name} - {account.public_identification_value}</p>
-                </li>
-              </a>
-            ))}
+            {accounts.length > 0 ? (
+
+              accounts.map((account) => (
+                <a key={account.id} href={`/${account.id}/${account.link}/transacciones`}>
+                  <li className="border p-4 rounded-lg shadow text-black hover:bg-gray-100">
+                    <p><strong>Nombre:</strong> {account.name}</p>
+                    <p><strong>Tipo:</strong> {account.type}</p>
+                    <p>{account.public_identification_name} - {account.public_identification_value}</p>
+                  </li>
+                </a>
+              ))
+            ) : (
+              <p className="text-gray-500 text-center">No hay cuentas disponibles.</p>
+            )}
           </ul>
         )}
       </div>

@@ -76,12 +76,13 @@ async def get_bank_link(bank_request: BankRequest):
             }
             for account in account_data
         ]
+
     return {"accounts": formatted_accounts}
 
 
 @router.post("/transacciones-cuenta")
 async def get_transacciones_cuenta(cuenta_request: CuentaRequest):
-    async with httpx.AsyncClient(timeout=20.0) as client:
+    async with httpx.AsyncClient(timeout=12.0) as client:
         response = await client.get(
             f"{settings.BELVO_BASE_URL}/api/transactions/?link={cuenta_request.link}&account={cuenta_request.id}", auth=auth)
 
