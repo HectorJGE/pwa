@@ -1,18 +1,9 @@
 "use client"
 import SalirButton from "@/components/SalirButton";
+import { fetchTransacciones } from "@/services/belvoApiService";
+import { Transaccion } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-type Transaccion = {
-  id: string;
-  category: string;
-  type: string;
-  status: string;
-  balance: string;
-  amount: string;
-  value_date: string;
-};
-
 
 export default function CuentaTransaccion() {
   const params = useParams();
@@ -31,36 +22,25 @@ export default function CuentaTransaccion() {
   };
 
   useEffect(() => {
-    const fetchTransacciones = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/transacciones-cuenta`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: cuenta, link: link }),
-          cache: "no-store",
-        });
-    
-        if (!response.ok) {
-          return null;
-        }
-    
-        const data = await response.json();
+    const getTransacciones = async () => {
+      setLoading(true);
+      const data = await fetchTransacciones(cuenta, link);
+  
+      if (data) {
         setTransacciones(data.transacciones);
         setKPI({
           ingreso: data.ingreso,
           egreso: data.egreso,
           balance: data.balance,
-        });        
-      } catch (error) {
-        console.error("Error fetching institutions:", error);
-      } finally {
-        setLoading(false);
+        });
       }
-    };
-
-    fetchTransacciones();
-  }, [cuenta, link]);
   
+      setLoading(false);
+    };
+  
+    getTransacciones();
+  }, [cuenta, link]);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-black p-2 md:p-10">
       <div className="bg-white p-4 md:p-10 rounded-lg shadow lg:w-1/2 w-full">

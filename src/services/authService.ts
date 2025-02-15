@@ -18,7 +18,6 @@ export const registerUser = async (formData: { nombre: string, apellido: string,
 
 
 export const loginUser = async (email: string, password: string) => {
-  console.log('a')
   try {
     const response = await fetch(`${API_URL}/login`, {
       method: "POST",

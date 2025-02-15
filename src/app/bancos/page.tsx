@@ -2,35 +2,27 @@
 import { useEffect, useState } from "react";
 import CardBank from "@/components/CardBank";
 import SalirButton from "@/components/SalirButton";
+import { fetchBanks } from "@/services/belvoApiService";
+import { Bank } from "@/types";
 
-interface Bank {
-  id: string,
-  display_name: string;
-  name: string;
-  country_code: string;
-  icon_logo: string;
-}
 
 export default function HomePage() {
   const [banks, setBanks] = useState<Bank[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBanks = async () => {
+    const loadBanks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/instituciones");
-        if (!response.ok) throw new Error("Error fetching banks");
-        
-        const data = await response.json();
-        setBanks(data.bancos);
+        const data = await fetchBanks();
+        setBanks(data);
       } catch (error) {
-        console.error("Error fetching institutions:", error);
+        console.error("Error fetching banks:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBanks();
+    loadBanks();
   }, []);
 
   return (

@@ -1,17 +1,9 @@
 "use client"
 import SalirButton from "@/components/SalirButton";
+import { fetchAccounts } from "@/services/belvoApiService";
+import { Account } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-type Account = {
-  id: string;
-  link: string;
-  type: string;
-  public_identification_name: string;
-  public_identification_value: string;
-  name: string;
-};
-
 
 export default function CuentasBanco() {
   const params = useParams();
@@ -20,29 +12,14 @@ export default function CuentasBanco() {
   const [accounts, setAccounts] = useState<Account[]>([]);
 
   useEffect(() => {
-    const fetchAccounts = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/cuentas-banco`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ institucion: banco }),
-          cache: "no-store",
-        });
-    
-        if (!response.ok) {
-          return null;
-        }
-    
-        const data = await response.json();
-        setAccounts(data.accounts);
-      } catch (error) {
-        console.error("Error fetching institutions:", error);
-      } finally {
-        setLoading(false);
-      }
+    const getAccounts = async () => {
+      setLoading(true);
+      const data = await fetchAccounts(banco);
+      if (data) setAccounts(data);
+      setLoading(false);
     };
 
-    fetchAccounts();
+    getAccounts();
   }, [banco]);
 
   return (
