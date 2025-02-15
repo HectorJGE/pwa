@@ -10,6 +10,8 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000", 
+    "https://teamb.com.py",
+    "http://teamb.com.py"
 ]
 
 app.add_middleware(
