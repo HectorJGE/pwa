@@ -2,7 +2,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchBanks = async () => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/instituciones`);
+        const response = await fetch(`${API_URL}/instituciones`);
         if (!response.ok) throw new Error("Error fetching banks");
 
         const data = await response.json();
@@ -15,7 +15,7 @@ export const fetchBanks = async () => {
 
 export const fetchAccounts = async (banco: string) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cuentas-banco`, {
+        const response = await fetch(`${API_URL}/cuentas-banco`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ institucion: banco }),
@@ -36,7 +36,7 @@ export const fetchAccounts = async (banco: string) => {
   
 export const fetchTransacciones = async (cuenta: string, link: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transacciones-cuenta`, {
+      const response = await fetch(`${API_URL}/transacciones-cuenta`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: cuenta, link: link }),
